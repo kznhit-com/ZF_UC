@@ -4,101 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الصفحة الرئيسية</title>
-
-<style>
-body{
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#2f3e46,#354f52);
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#eaeaea;
-    transition:.3s;
-}
-
-body.dark{
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-}
-
-#darkToggle{
-    position:fixed;
-    top:15px;
-    left:15px;
-    font-size:22px;
-    background:rgba(0,0,0,.4);
-    color:#fff;
-    border:none;
-    border-radius:50%;
-    width:45px;
-    height:45px;
-    cursor:pointer;
-}
-
-.container{
-    position:relative;
-    background:rgba(0,0,0,.35);
-    padding:40px 30px;
-    border-radius:22px;
-    width:90%;
-    max-width:420px;
-    text-align:center;
-    box-shadow:0 25px 60px rgba(0,0,0,.6);
-}
-
-h1{font-size:32px;margin-bottom:10px}
-p{font-size:18px;margin-bottom:25px}
-
-.game-button{
-    width:100%;
-    margin:12px 0;
-    padding:15px;
-    font-size:20px;
-    border:none;
-    border-radius:14px;
-    cursor:pointer;
-    background:#cad2c5;
-    color:#2f3e46;
-}
-
-.reset-btn{
-    margin-top:15px;
-    padding:10px;
-    width:100%;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    background:#a4161a;
-    color:#fff;
-}
-
-footer{
-    margin-top:25px;
-    font-size:14px;
-    opacity:.85;
-}
-
-.menu-btn{
-    position:absolute;
-    top:18px;
-    right:18px;
-    font-size:22px;
-    cursor:pointer;
-}
-
-.menu{
-    position:absolute;
-    top:55px;
-    right:15px;
-    background:#f1faee;
-    color:#222;
-    width:260px;
-    padding:15px;
-    border-radius:16px;
-    display:none;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -107,49 +13,30 @@ footer{
 
 <div class="container">
 
-<div class="menu-btn" onclick="toggleMenu()">☰</div>
+    <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
-<div class="menu" id="menu">
-    <div>🧮 رياضيات: <span id="mathScore">-</span></div>
-    <div>🧠 معلومات: <span id="logicScore">-</span></div>
-    <div>🃏 ذاكرة: <span id="memoryScore">-</span></div>
+    <div class="menu" id="menu">
+        <h3>📊 درجاتك</h3>
+        <div>آخر نتيجة: <span id="lastScore">-</span></div>
+        <div>عدد المحاولات: <span id="tries">0</span></div>
+        <hr>
+        <div>🧮 رياضيات: <span id="mathScore">-</span></div>
+        <div>🧠 معلومات: <span id="logicScore">-</span></div>
+        <div>🃏 ذاكرة: <span id="memoryScore">-</span></div>
+    </div>
+
+    <h1>هلا والله يالله حيه</h1>
+    <p>اختر من الالعاب ذي طال عمرك</p>
+
+    <button class="game-button" onclick="goTo('math-game.html')">🧮 لعبة الرياضيات</button>
+    <button class="game-button" onclick="goTo('logic-game.html')">🧠 لعبة المعلومات</button>
+    <button class="game-button" onclick="goTo('memory-game.html')">🃏 لعبة الذاكرة</button>
+
+    <button class="reset-btn" onclick="resetAll()">🔄 تصفير الدرجات</button>
+
+    <footer>تم تطوير وبرمجة هذا الموقع بواسطة فارس</footer>
 </div>
 
-<h1>هلا والله يالله حيه</h1>
-<p>اختر من الالعاب ذي طال عمرك</p>
-
-<button class="game-button" onclick="location.href='math-game.html'">🧮 لعبة الرياضيات</button>
-<button class="game-button" onclick="location.href='logic-game.html'">🧠 لعبة المعلومات</button>
-<button class="game-button" onclick="location.href='memory-game.html'">🃏 لعبة الذاكرة</button>
-
-<button class="reset-btn" onclick="resetAll()">🔄 تصفير الدرجات</button>
-
-<footer>تم تطوير وبرمجة هذا الموقع بواسطة فارس</footer>
-
-</div>
-
-<script>
-function toggleDark(){
-    document.body.classList.toggle("dark");
-}
-
-function toggleMenu(){
-    const m=document.getElementById("menu");
-    m.style.display = m.style.display==="block"?"none":"block";
-}
-
-function resetAll(){
-    localStorage.clear();
-    location.reload();
-}
-
-function loadScores(){
-    mathScore.innerText = localStorage.getItem("mathScore") ?? "-";
-    logicScore.innerText = localStorage.getItem("logicScore") ?? "-";
-    memoryScore.innerText = localStorage.getItem("memoryScore") ?? "-";
-}
-loadScores();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
