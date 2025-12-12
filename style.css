@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الصفحة الرئيسية</title>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Cairo', sans-serif;
+    background: radial-gradient(circle at top, #2b2b2b, #141414);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e0e0e0;
+    overflow: hidden;
+}
+
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.container {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(18px);
+    border-radius: 28px;
+    padding: 50px 40px;
+    width: 90%;
+    max-width: 430px;
+    text-align: center;
+    animation: fadeSlide 1.2s ease forwards;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #bcbcbc;
+}
+
+.game-button {
+    width: 100%;
+    padding: 17px;
+    margin: 16px 0;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    color: #f0f0f0;
+    background: linear-gradient(145deg, #3a3a3a, #262626);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.7);
+    transition: all 0.25s ease;
+}
+
+.game-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    background: linear-gradient(145deg, #444, #2f2f2f);
+}
+
+.game-button:active {
+    transform: scale(0.97);
+}
+
+footer {
+    margin-top: 40px;
+    font-size: 14px;
+    color: #9e9e9e;
+}
+
+.bg-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+    top: -150px;
+    right: -150px;
+    animation: float 10s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    from { transform: translateY(0); }
+    to { transform: translateY(60px); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- أصوات -->
+<audio id="hoverSound">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-click-melodic-tone-1129.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="clickSound">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-soft-click-1123.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <h1>هلا والله يالله حيه</h1>
+    <p>اختر من الالعاب ذي طال عمرك</p>
+
+    <button class="game-button" onclick="playClick(); go('math-game.html')" onmouseenter="playHover()">
+        🧮 لعبة الرياضيات
+    </button>
+
+    <button class="game-button" onclick="playClick(); go('logic-game.html')" onmouseenter="playHover()">
+        🧠 لعبة المعلومات
+    </button>
+
+    <button class="game-button" onclick="playClick(); go('memory-game.html')" onmouseenter="playHover()">
+        🃏 لعبة الذاكرة
+    </button>
+
+    <footer>
+        تم تطوير وبرمجة هذا الموقع بواسطة فارس
+    </footer>
+</div>
+
+<script>
+const hoverSound = document.getElementById("hoverSound");
+const clickSound = document.getElementById("clickSound");
+
+function playHover() {
+    hoverSound.currentTime = 0;
+    hoverSound.volume = 0.15;
+    hoverSound.play();
+}
+
+function playClick() {
+    clickSound.currentTime = 0;
+    clickSound.volume = 0.25;
+    clickSound.play();
+}
+
+function go(page) {
+    setTimeout(() => {
+        window.location.href = page;
+    }, 200);
+}
+</script>
+
+</body>
+</html>
