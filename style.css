@@ -1,157 +1,176 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الصفحة الرئيسية</title>
+/* =====================
+   إعدادات عامة
+===================== */
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: 'Cairo', sans-serif;
-    background: radial-gradient(circle at top, #2b2b2b, #141414);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #e0e0e0;
-    overflow: hidden;
+*{
+    box-sizing:border-box;
 }
 
-@keyframes fadeSlide {
-    from { opacity: 0; transform: translateY(40px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+body{
+    font-family: "Cairo", Arial, sans-serif;
+    background: linear-gradient(135deg,#f1f5f9,#e2e8f0);
+    margin:0;
+    padding:0;
+    text-align:center;
+    color:#1f2937;
 }
 
-.container {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(18px);
-    border-radius: 28px;
-    padding: 50px 40px;
-    width: 90%;
-    max-width: 430px;
-    text-align: center;
-    animation: fadeSlide 1.2s ease forwards;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+/* =====================
+   العناوين
+===================== */
+
+h1,h2,h3{
+    margin:10px 0;
+    font-weight:700;
 }
 
-h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
+/* =====================
+   أزرار عامة
+===================== */
+
+button{
+    background:#ffffff;
+    border:none;
+    border-radius:14px;
+    padding:12px 20px;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(0,0,0,.15);
+    transition:.2s;
 }
 
-p {
-    font-size: 18px;
-    margin-bottom: 40px;
-    color: #bcbcbc;
+button:hover{
+    transform:scale(1.06);
+    background:#ecfeff;
 }
 
-.game-button {
-    width: 100%;
-    padding: 17px;
-    margin: 16px 0;
-    font-size: 20px;
-    font-weight: 600;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    color: #f0f0f0;
-    background: linear-gradient(145deg, #3a3a3a, #262626);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.7);
-    transition: all 0.25s ease;
+button:active{
+    transform:scale(.96);
 }
 
-.game-button:hover {
-    transform: translateY(-4px) scale(1.03);
-    background: linear-gradient(145deg, #444, #2f2f2f);
+/* زر الرجوع */
+.back{
+    background:#1f2937;
+    color:#fff;
 }
 
-.game-button:active {
-    transform: scale(0.97);
+/* =====================
+   صندوق اللعبة
+===================== */
+
+#game{
+    margin-top:20px;
+    animation:fadeUp .4s ease;
 }
 
-footer {
-    margin-top: 40px;
-    font-size: 14px;
-    color: #9e9e9e;
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:none}
 }
 
-.bg-glow {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
-    top: -150px;
-    right: -150px;
-    animation: float 10s ease-in-out infinite alternate;
+/* =====================
+   السؤال
+===================== */
+
+.question{
+    font-size:22px;
+    margin:20px;
 }
 
-@keyframes float {
-    from { transform: translateY(0); }
-    to { transform: translateY(60px); }
-}
-</style>
-</head>
-<body>
+/* =====================
+   خيارات الأسئلة
+===================== */
 
-<div class="bg-glow"></div>
-
-<!-- أصوات -->
-<audio id="hoverSound">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-click-melodic-tone-1129.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="clickSound">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-soft-click-1123.mp3" type="audio/mpeg">
-</audio>
-
-<div class="container">
-    <h1>هلا والله يالله حيه</h1>
-    <p>اختر من الالعاب ذي طال عمرك</p>
-
-    <button class="game-button" onclick="playClick(); go('math-game.html')" onmouseenter="playHover()">
-        🧮 لعبة الرياضيات
-    </button>
-
-    <button class="game-button" onclick="playClick(); go('logic-game.html')" onmouseenter="playHover()">
-        🧠 لعبة المعلومات
-    </button>
-
-    <button class="game-button" onclick="playClick(); go('memory-game.html')" onmouseenter="playHover()">
-        🃏 لعبة الذاكرة
-    </button>
-
-    <footer>
-        تم تطوير وبرمجة هذا الموقع بواسطة فارس
-    </footer>
-</div>
-
-<script>
-const hoverSound = document.getElementById("hoverSound");
-const clickSound = document.getElementById("clickSound");
-
-function playHover() {
-    hoverSound.currentTime = 0;
-    hoverSound.volume = 0.15;
-    hoverSound.play();
+.option{
+    display:block;
+    width:90%;
+    max-width:320px;
+    margin:10px auto;
+    padding:12px;
+    font-size:18px;
+    border-radius:14px;
+    background:#ffffff;
+    box-shadow:0 4px 10px rgba(0,0,0,.12);
+    transition:.2s;
 }
 
-function playClick() {
-    clickSound.currentTime = 0;
-    clickSound.volume = 0.25;
-    clickSound.play();
+.option:hover{
+    background:#e0f2fe;
+    transform:scale(1.05);
 }
 
-function go(page) {
-    setTimeout(() => {
-        window.location.href = page;
-    }, 200);
-}
-</script>
+/* =====================
+   النتائج
+===================== */
 
-</body>
-</html>
+.result{
+    background:#ffffff;
+    margin:12px auto;
+    padding:14px;
+    border-radius:14px;
+    width:90%;
+    max-width:520px;
+    text-align:right;
+    box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+
+.correct{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.incorrect{
+    color:#dc2626;
+    font-weight:bold;
+}
+
+/* =====================
+   لعبة الذاكرة
+===================== */
+
+#board{
+    display:grid;
+    gap:10px;
+    justify-content:center;
+    margin:20px auto;
+}
+
+.card{
+    width:80px;
+    height:80px;
+    border-radius:14px;
+    background:#22c55e;
+    color:#fff;
+    font-size:26px;
+    line-height:80px;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.hidden{
+    background:#94a3b8;
+    color:#94a3b8;
+}
+
+/* =====================
+   تايمر
+===================== */
+
+#timer{
+    font-size:20px;
+    margin:10px;
+    font-weight:bold;
+}
+
+/* =====================
+   أنميشن الرسائل
+===================== */
+
+@keyframes popIn{
+    to{transform:scale(1)}
+}
