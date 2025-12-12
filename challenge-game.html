@@ -1,1 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>لعبة التحدي المتغير</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<button class="back" onclick="goTo('index.html')">⬅️ رجوع</button>
+
+<div id="game">
+    <h2 id="instruction"></h2>
+    <div id="choices"></div>
+</div>
+
+<div id="message"></div>
+
+<div id="actions" style="display:none">
+    <button class="back" onclick="location.reload()">🔄 إعادة اللعب</button>
+</div>
+
+<script src="script.js"></script>
+<script src="challenge.js"></script>
+
+</body>
+</html>
