@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الذاكرة</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; margin: 0; padding: 20px; }
+        #difficultyChoice { margin-bottom: 20px; }
+        #startBtn { padding: 15px 30px; font-size: 20px; cursor: pointer; }
+        #gameBoard { display: none; margin-top: 20px; }
+        .card { 
+            width: 80px; height: 80px; margin: 5px; display: inline-block; background-color: #4CAF50; color: white; font-size: 24px; line-height: 80px; vertical-align: middle; }
+        .hidden { background-color: #ddd; color: #ddd; }
+    </style>
+</head>
+<body>
+
+<div id="difficultyChoice">
+    <label>اختر المستوى:</label>
+    <button onclick="setDifficulty('easy')">سهل</button>
+    <button onclick="setDifficulty('hard')">صعب</button>
+</div>
+
+<button id="startBtn" onclick="startGame()" style="display:none;">البدء</button>
+
+<div id="gameBoard"></div>
+
+<script>
+    let difficulty = 'easy';
+    let timeLimit = 40; // Default for easy mode (after adding 20 seconds)
+    let firstCard = null, secondCard = null, lockBoard = false, matches = 0, startTime;
+    let cards = [];
+
+    function setDifficulty(level) {
+        difficulty = level;
+        if (level === 'easy') {
+            cards = createCardsArray(16); // 16 cards (4x4)
+            timeLimit = 40; // 40 seconds for "حيّ عينك!" and 60 for "طوّلت يا أخي"
+        } else {
+            cards = createCardsArray(30); // 30 cards (5x6)
+            timeLimit = 60; // 60 seconds for "حيّ عينك!" and 100 for "طوّلت يا أخي"
+        }
+        document.getElementById('difficultyChoice').style.display = 'none';
+        document.getElementById('startBtn').style.display = 'inline-block';
+    }
+
+    function createCardsArray(numCards) {
+        const numbers = Array.from({ length: numCards / 2 }, (_, i) => i + 1);
+        return shuffle([...numbers, ...numbers]);
+    }
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function startGame() {
+        document.getElementById('startBtn').style.display = 'none';
+        document.getElementById('gameBoard').style.display = 'block';
+        shuffle(cards);
+        createBoard();
+        startTime = Date.now();
+    }
+
+    function createBoard() {
+        const board = document.getElementById('gameBoard');
+        board.innerHTML = '';
+        cards.forEach(num => {
+            const card = document.createElement('div');
+            card.classList.add('card', 'hidden');
+            card.dataset.number = num;
+            card.onclick = () => flipCard(card);
+            board.appendChild(card);
+        });
+    }
+
+    function flipCard(card) {
+        if (lockBoard || !card.classList.contains('hidden')) return;
+        card.classList.remove('hidden');
+        card.textContent = card.dataset.number;
+
+        if (!firstCard) {
+            firstCard = card;
+        } else if (!secondCard) {
+            secondCard = card;
+            checkMatch();
+        }
+    }
+
+    function checkMatch() {
+        lockBoard = true;
+        if (firstCard.dataset.number === secondCard.dataset.number) {
+            matches++;
+            reset
