@@ -3,40 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <title>لعبة المعلومات</title>
+
 <style>
 body{
     font-family:Arial;
-    text-align:center;
     background:#f0f0f0;
     margin:0;
-    padding-top:30px
+    padding-top:20px;
+    text-align:center;
 }
-.question{font-size:22px;margin-bottom:20px}
-.option{
-    display:block;
-    margin:8px auto;
-    padding:10px 20px;
-    font-size:18px;
-    cursor:pointer;
-    width:300px
-}
-.correct{background:#b6f2b6}
-.incorrect{background:#f2b6b6}
-#message{font-size:24px;margin:20px}
+
 .back{
-    margin-bottom:15px;
-    cursor:pointer;
+    margin:10px;
+    padding:8px 16px;
     background:#333;
     color:#fff;
     border:none;
-    padding:8px 16px;
-    border-radius:8px
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#game{
+    animation:fadeInUp .4s ease;
+}
+
+@keyframes fadeInUp{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:none}
+}
+
+.question{
+    font-size:22px;
+    margin:20px;
+}
+
+.option{
+    display:block;
+    width:280px;
+    margin:8px auto;
+    padding:10px;
+    font-size:18px;
+    cursor:pointer;
+    border-radius:10px;
+    border:1px solid #ccc;
+    transition:.2s;
+}
+.option:hover{
+    background:#e9edc9;
+    transform:scale(1.05);
+}
+
+.result{
+    background:#fff;
+    margin:12px auto;
+    padding:12px;
+    border-radius:12px;
+    text-align:right;
+    width:90%;
+    max-width:520px;
+}
+
+.correct{color:green}
+.incorrect{color:red}
+
+#actions{
+    margin:20px;
 }
 </style>
 </head>
+
 <body>
 
-<button class="back" onclick="window.location.href='index.html'">⬅️ رجوع</button>
+<button class="back" onclick="goTo('index.html')">⬅️ رجوع</button>
 
 <div id="game">
     <div class="question" id="question"></div>
@@ -45,7 +83,14 @@ body{
 
 <div id="message"></div>
 
+<div id="actions" style="display:none">
+    <button class="back" onclick="location.reload()">🔄 إعادة اللعب</button>
+</div>
+
+<script src="script.js"></script>
+
 <script>
+/* ===== بنك الأسئلة ===== */
 const allQuestions = [
 {q:"ما الكوكب الأحمر؟",c:["الزهرة","المريخ","عطارد","زحل"],a:"المريخ"},
 {q:"ما أكبر حيوان على وجه الأرض؟",c:["الفيل","الحوت الأزرق","الزرافة","وحيد القرن"],a:"الحوت الأزرق"},
@@ -85,17 +130,16 @@ const allQuestions = [
 {q:"صديق الإنسان؟",c:["القط","الحصان","الكلب","الطائر"],a:"الكلب"}
 ];
 
+/* ===== منطق اللعبة ===== */
 function shuffle(a){return a.sort(()=>Math.random()-0.5)}
-
 let questions = shuffle([...allQuestions]).slice(0,10);
 let index=0, score=0, answers=[];
 
 function show(){
-    const q = questions[index];
-    question.innerText = q.q;
-    const opts = shuffle([...q.c]);
+    const q=questions[index];
+    question.innerText=q.q;
     options.innerHTML="";
-    opts.forEach(o=>{
+    shuffle([...q.c]).forEach(o=>{
         const b=document.createElement("button");
         b.className="option";
         b.innerText=o;
@@ -105,41 +149,38 @@ function show(){
 }
 
 function check(sel){
-    answers.push({sel,correct:questions[index].a});
+    answers.push({question:questions[index].q,selected:sel,correct:questions[index].a});
     if(sel===questions[index].a) score++;
     index++;
-    index<questions.length ? setTimeout(show,300) : end();
+    index<questions.length?show():end();
 }
 
 function end(){
     game.style.display="none";
 
-    let msg = score>=7 ? "حيّ عينك كفو كفو"
-            : score>=4 ? "مااااااااش!"
-            : "لا أحد يشوفك بس";
-    message.innerText = msg;
+    const msg = score>=7?"حيّ عينك كفو كفو":score>=4?"مااااش":"لا أحد يشوفك بس";
+    showCenterMessage(msg);
 
-    /* 💾 localStorage */
-    localStorage.setItem("lastScore", score);
-
-    let best = localStorage.getItem("bestScore");
-    if(!best || score>best) localStorage.setItem("bestScore", score);
-
-    localStorage.setItem("logicScore", score);
-    localStorage.setItem("tries", Number(localStorage.getItem("tries")||0)+1);
-
-    let history = JSON.parse(localStorage.getItem("history")||"[]");
-    history.push("🧠 معلومات: "+score+"/10");
-    localStorage.setItem("history", JSON.stringify(history));
+    saveScore({
+        game:"logic",
+        score:score,
+        text:"🧠 معلومات: "+score+"/10"
+    });
 
     setTimeout(()=>{
-        message.innerHTML="<h3>إجاباتك:</h3>";
+        message.innerHTML="<h3>تفصيل الإجابات:</h3>";
         answers.forEach(a=>{
             const d=document.createElement("div");
-            d.innerText=a.sel;
-            d.className=a.sel===a.correct?"correct":"incorrect";
+            d.className="result";
+            d.innerHTML=`
+            <strong>السؤال:</strong> ${a.question}<br>
+            <span class="${a.selected===a.correct?'correct':'incorrect'}">
+              اختيارك: ${a.selected}
+            </span><br>
+            <span class="correct">الجواب الصحيح: ${a.correct}</span>`;
             message.appendChild(d);
         });
+        actions.style.display="block";
     },3000);
 }
 
