@@ -1,16 +1,24 @@
+*{box-sizing:border-box}
+
 body{
-    font-family:Arial;
-    background:linear-gradient(135deg,#2f3e46,#354f52);
+    font-family:Arial, sans-serif;
     margin:0;
+    background:#f0f0f0;
+    color:#222;
+}
+
+/* الصفحة الرئيسية */
+.home{
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:#eee;
-    transition:.3s;
+    background:linear-gradient(135deg,#2f3e46,#354f52);
 }
 
+/* الحاوية */
 .container{
+    position:relative;
     background:rgba(0,0,0,.35);
     padding:40px 30px;
     border-radius:22px;
@@ -18,11 +26,18 @@ body{
     max-width:420px;
     text-align:center;
     box-shadow:0 25px 60px rgba(0,0,0,.6);
+    animation:floatIn .6s ease;
 }
 
-h1{margin-bottom:10px;font-size:32px}
+@keyframes floatIn{
+    from{transform:translateY(20px);opacity:0}
+    to{transform:translateY(0);opacity:1}
+}
+
+h1{margin-bottom:10px;font-size:32px;color:#fff}
 p{margin-bottom:25px;font-size:18px;color:#ddd}
 
+/* أزرار الألعاب */
 .game-button{
     width:100%;
     margin:12px 0;
@@ -35,41 +50,62 @@ p{margin-bottom:25px;font-size:18px;color:#ddd}
     color:#2f3e46;
     transition:.25s;
 }
-.game-button:hover{transform:scale(1.05)}
+.game-button:hover{
+    transform:scale(1.06);
+    background:#e9edc9;
+}
 
+/* زر التصفير */
 .reset-btn{
     margin-top:15px;
-    padding:10px;
+    padding:12px;
     width:100%;
     border:none;
     border-radius:12px;
     cursor:pointer;
-    background:#a4161a;
+    background:#e63946;
     color:#fff;
+    font-size:16px;
+}
+.reset-btn:hover{background:#c1121f}
+
+/* الفوتر */
+.footer{
+    margin-top:30px;
+    font-size:16px;
+    color:#f1f1f1;
+    text-align:center;
+    opacity:0.95;
+}
+.footer span{
+    font-weight:700;
+    color:#ffd166;
 }
 
-footer{margin-top:25px;font-size:14px;opacity:.85}
-
+/* زر الدارك مود */
 #darkToggle{
     position:fixed;
     top:15px;
     right:15px;
-    width:42px;
-    height:42px;
+    width:44px;
+    height:44px;
     border-radius:50%;
     border:none;
     background:#111;
     color:#fff;
-    font-size:18px;
+    font-size:20px;
     cursor:pointer;
+    z-index:1000;
 }
 
+/* المنيو */
 .menu-btn{
     position:absolute;
     top:18px;
     right:18px;
     font-size:22px;
     cursor:pointer;
+    color:#fff;
 }
 
 .menu{
@@ -78,18 +114,19 @@ footer{margin-top:25px;font-size:14px;opacity:.85}
     right:15px;
     background:#f1faee;
     color:#222;
-    width:250px;
+    width:260px;
     padding:15px;
     border-radius:16px;
     display:none;
     text-align:right;
+    box-shadow:0 20px 40px rgba(0,0,0,.4);
 }
 
 /* دارك مود */
 body.dark{
-    background:#0f172a;
+    background:#121212;
     color:#eee;
 }
-body.dark .container{background:#111827}
-body.dark .game-button{background:#374151;color:#fff}
+body.dark .container{background:rgba(255,255,255,.08)}
+body.dark .game-button{background:#333;color:#fff}
 body.dark .menu{background:#111827;color:#fff}
