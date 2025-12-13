@@ -104,12 +104,8 @@ function endGame(){
     else msg="طوّلت يا أخي جانا النوم 😴";
 
     showCenterMessage(msg + "\nوقتك: " + time + " ثانية");
-
-    saveScore({
-        game:"memory",
-        score:time,
-        text:"🃏 ذاكرة: "+time+" ثانية"
-    });
+saveScore("memory", time, "🃏 ذاكرة: " + time + " ثانية");
+   
 
     setTimeout(()=>{
         actions.style.display="block";
