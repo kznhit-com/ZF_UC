@@ -1,133 +1,256 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لعبة الرياضيات</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(135deg,#354f52,#2f3e46);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+}
+
+.game-container{
+    position:relative;
+    width:90%;
+    max-width:520px;
+    background:rgba(0,0,0,.45);
+    padding:30px;
+    border-radius:22px;
+    text-align:center;
+}
+
+.back{
+    position:absolute;
+    top:15px;
+    left:15px;
+    border:none;
+    border-radius:12px;
+    padding:8px 14px;
+    cursor:pointer;
+}
+
+.menu-btn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    cursor:pointer;
+    font-size:22px;
+}
+
+.menu{
+    position:absolute;
+    top:55px;
+    right:10px;
+    background:#fff;
+    color:#000;
+    width:100%;
+    max-width:480px;
+    padding:15px;
+    border-radius:16px;
+    display:none;
+    text-align:right;
+}
+
+.question{
+    background:#fff;
+    color:#000;
+    padding:22px;
+    border-radius:16px;
+    font-size:28px;
+    margin-bottom:25px;
+}
+
+.answers{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.answers button{
+    background:#000;
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    padding:20px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.answers button:hover{background:#222}
+
+.center{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:100;
+}
+
+.center div{
+    background:#fff;
+    color:#000;
+    padding:30px;
+    border-radius:20px;
+    font-size:24px;
+    text-align:center;
+}
+
+.result{
+    background:#f1f1f1;
+    color:#000;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.correct{color:green;font-weight:bold}
+.incorrect{color:red;font-weight:bold}
+</style>
 </head>
 
 <body>
 
-<button class="back" onclick="goTo('index.html')">⬅️ رجوع</button>
+<div class="game-container">
 
-<div id="game">
-    <div class="question" id="question"></div>
-    <div id="options"></div>
+<button class="back" onclick="location.href='index.html'">⬅️</button>
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div class="menu" id="menu">
+<h3>📊 آخر نتيجة</h3>
+<div id="scoreBox">-</div>
 </div>
 
-<div id="message"></div>
+<div class="question" id="question"></div>
+<div class="answers" id="answers"></div>
 
-<div id="actions" style="display:none">
-    <button class="back" onclick="location.reload()">🔄 إعادة اللعب</button>
 </div>
-
-<script src="script.js"></script>
 
 <script>
-/* ===== 65 سؤال كاملة ===== */
 const allQuestions = [
-{q:"زاوية تكمل 35° لتصبح 90°؟",c:[45,55,65,75],a:55},
-{q:"2x+6=18",c:[5,6,7,8],a:6},
-{q:"مربع محيطه 20، طول الضلع؟",c:[4,5,6,8],a:5},
-{q:"8×(5−2)",c:[16,20,24,30],a:24},
-{q:"مجموع زاويتين 110°، الثالثة؟",c:[60,70,80,90],a:70},
-{q:"عددان متتاليان مجموعهما 41",c:["20 و21","19 و22","18 و23","17 و24"],a:"20 و21"},
-{q:"مساحة مستطيل 9×4",c:[36,30,32,40],a:36},
-{q:"x−7=15",c:[18,20,22,25],a:22},
-{q:"زاوية مستقيمة",c:[90,120,180,360],a:180},
-{q:"عدد ÷4 =7",c:[24,26,28,30],a:28},
-{q:"محيط مثلث متساوي الأضلاع ضلعه 7",c:[14,21,28,35],a:21},
-{q:"3²+4²",c:[25,49,12,7],a:25},
-{q:"عدد+9 ثم ×2 =30",c:[6,7,8,9],a:6},
-{q:"عدد أضلاع المثمن",c:[6,7,8,9],a:8},
-{q:"مجموع زوايا الرباعي",c:[180,270,360,450],a:360},
-{q:"(10÷2)×6",c:[25,30,40,60],a:30},
-{q:"مساحة مربع ضلعه 11",c:[121,111,99,132],a:121},
-{q:"5x−5=20",c:[4,5,6,7],a:5},
-{q:"محيط مربع مساحته 49",c:[24,26,28,30],a:28},
+{q:"2 + 3 × 2 = ؟",c:[10,7,8,6],a:8},
+{q:"محيط مربع ضلعه 5",c:[10,15,20,25],a:20},
 {q:"(4+6)²",c:[50,64,100,121],a:100},
-
-{q:"عدد إذا ضرب في نفسه =144",c:[10,11,12,13],a:12},
-{q:"زاويتان متكاملتان مجموعهما",c:[90,120,180,360],a:180},
-{q:"5×6−8",c:[22,24,26,30],a:22},
-{q:"عدد ÷5 =9",c:[40,45,50,55],a:45},
-{q:"مساحة مثلث قاعدته 10 وارتفاعه 6",c:[30,40,50,60],a:30},
-{q:"4x=36",c:[7,8,9,10],a:9},
-{q:"محيط مستطيل 12×8",c:[30,36,40,48],a:40},
-{q:"عدد زوايا الخماسي",c:[4,5,6,7],a:5},
-{q:"2³+5",c:[11,12,13,14],a:13},
-{q:"عدد−15=25",c:[35,40,45,50],a:40},
-{q:"(7+5)×3",c:[30,33,36,40],a:36},
-{q:"عدد ÷8 =6",c:[42,46,48,54],a:48},
-{q:"مجموع زوايا الخماسي",c:[360,450,540,630],a:540},
-{q:"6³÷9",c:[18,24,36,48],a:24},
-{q:"عدد−20 = نصفه",c:[20,30,40,50],a:40},
-{q:"محيط دائرة قطرها 14",c:[22,44,66,88],a:44},
-
-{q:"مساحة دائرة قطرها 10",c:[75,78,80,100],a:75},
-{q:"عدد ÷9 =8",c:[63,72,81,90],a:72},
-{q:"3(x−2)=12",c:[4,5,6,7],a:6},
-{q:"محيط مربع قطره 10",c:[20,28,40,56],a:40},
-{q:"(2+3)³",c:[25,75,100,125],a:125},
-{q:"عدد إذا ضرب في 7 =63",c:[7,8,9,10],a:9},
-{q:"زاوية منفرجة تقع بين",c:["0-90","90-180","180-270","270-360"],a:"90-180"},
-{q:"عدد أضلاع المعين",c:[3,4,5,6],a:4},
-{q:"مجموع زوايا السداسي",c:[540,600,720,900],a:720},
-{q:"15−(5×2)",c:[3,5,7,10],a:5},
-{q:"عدد إذا زيد 12 أصبح ضعفه",c:[10,12,14,16],a:12},
-{q:"محيط مربع ضلعه 9",c:[18,27,36,45],a:36},
-{q:"عدد أولي من الخيارات",c:[9,15,17,21],a:17},
+{q:"3² + 4²",c:[25,49,12,7],a:25},
+{q:"عدد ÷4 =7",c:[24,26,28,30],a:28},
+{q:"2x + 6 = 18",c:[5,6,7,8],a:6},
+{q:"زاوية مستقيمة",c:[90,120,180,360],a:180},
+{q:"عدد أولي",c:[9,15,17,21],a:17},
+{q:"(6+4)÷2",c:[4,5,6,7],a:5},
 {q:"مجموع أول 3 أعداد فردية",c:[6,8,9,12],a:9},
-{q:"(6+4)÷2",c:[4,5,6,7],a:5}
+
+{q:"5x - 5 = 20",c:[4,5,6,7],a:5},
+{q:"8 × (5−2)",c:[16,20,24,30],a:24},
+{q:"عدد إذا ضرب في نفسه = 144",c:[10,11,12,13],a:12},
+{q:"عدد - 20 = نصفه",c:[20,30,40,50],a:40},
+{q:"مجموع زوايا الرباعي",c:[180,270,360,450],a:360},
+{q:"(2+3)³",c:[25,75,100,125],a:125},
+{q:"عدد ÷5 = 9",c:[40,45,50,55],a:45},
+{q:"مساحة مربع ضلعه 11",c:[121,111,99,132],a:121},
+{q:"محيط مثلث متساوي الأضلاع ضلعه 7",c:[14,21,28,35],a:21},
+{q:"3(x−2)=12",c:[4,5,6,7],a:6},
+
+{q:"عدد إذا زيد 12 أصبح ضعفه",c:[10,12,14,16],a:12},
+{q:"6³ ÷ 9",c:[18,24,36,48],a:24},
+{q:"مجموع زوايا الخماسي",c:[360,450,540,630],a:540},
+{q:"عدد ÷8 = 6",c:[42,46,48,54],a:48},
+{q:"4x = 36",c:[7,8,9,10],a:9},
+{q:"(10÷2)×6",c:[25,30,40,60],a:30},
+{q:"عدد أضلاع المثمن",c:[6,7,8,9],a:8},
+{q:"مجموع زوايا السداسي",c:[540,600,720,900],a:720},
+{q:"زاوية منفرجة تقع بين",c:["0-90","90-180","180-270","270-360"],a:"90-180"},
+{q:"عدد أولي آخر",c:[21,27,29,35],a:29},
+
+{q:"محيط مربع مساحته 49",c:[24,26,28,30],a:28},
+{q:"عدد + 9 ثم ×2 = 30",c:[5,6,7,8],a:6},
+{q:"15 − (5×2)",c:[3,5,7,10],a:5},
+{q:"عدد ÷9 = 8",c:[63,72,81,90],a:72},
+{q:"محيط دائرة قطرها 14",c:[22,44,66,88],a:44},
+{q:"مساحة دائرة قطرها 10",c:[75,78,80,100],a:75},
+{q:"عدد زوايا الخماسي",c:[4,5,6,7],a:5},
+{q:"(7+5)×3",c:[30,33,36,40],a:36},
+{q:"عددان متتاليان مجموعهما 41",c:["20 و21","19 و22","18 و23","17 و24"],a:"20 و21"},
+{q:"محيط مستطيل 12×8",c:[30,36,40,48],a:40},
+
+{q:"(4+5)²",c:[81,64,100,121],a:81},
+{q:"عدد ×7 = 63",c:[7,8,9,10],a:9},
+{q:"مجموع زوايا المثلث",c:[90,180,270,360],a:180},
+{q:"عدد زوجي من الخيارات",c:[7,9,12,15],a:12},
+{q:"عدد فردي من الخيارات",c:[8,10,11,14],a:11}
 ];
 
-/* ===== منطق اللعبة ===== */
 function shuffle(a){return a.sort(()=>Math.random()-0.5)}
+
 let questions = shuffle([...allQuestions]).slice(0,10);
-let index=0, score=0, answers=[];
+let index=0, score=0, log=[];
+let timer;
 
 function show(){
+    clearTimeout(timer);
     const q=questions[index];
     question.innerText=q.q;
-    options.innerHTML="";
+    answers.innerHTML="";
     shuffle([...q.c]).forEach(o=>{
         const b=document.createElement("button");
-        b.className="option";
         b.innerText=o;
-        b.onclick=()=>check(o);
-        options.appendChild(b);
+        b.onclick=()=>choose(o);
+        answers.appendChild(b);
     });
+    timer=setTimeout(()=>choose(null),5000);
 }
 
-function check(sel){
-    answers.push({question:questions[index].q,selected:sel,correct:questions[index].a});
-    if(sel===questions[index].a) score++;
+function choose(sel){
+    clearTimeout(timer);
+    const q=questions[index];
+    log.push({q:q.q,sel,cor:q.a});
+    if(sel===q.a) score++;
     index++;
     index<questions.length?show():end();
 }
 
 function end(){
-    game.style.display="none";
+    localStorage.setItem("mathScore",score+"/10");
+    scoreBox.innerText=score+"/10";
 
-    const msg = score>=7?"حي عينك كفو كفو":score>=4?"مااااش":"لا أحد يشوف درجتك بس";
-    showCenterMessage(msg + "\nدرجتك: " + score + " / 10");
-saveScore("math", score, "🧮 رياضيات: " + score + "/10");
-    
+    let msg = score>=7?"حي عينك كفو كفو!"
+            :score>=4?"مااااش!"
+            :"لا حد يشوف درجتك بس";
+
+    const c=document.createElement("div");
+    c.className="center";
+    c.innerHTML=`<div>${msg}<br>درجتك: ${score}/10</div>`;
+    document.body.appendChild(c);
+
     setTimeout(()=>{
-        message.innerHTML="<h3>تفصيل الإجابات:</h3>";
-        answers.forEach(a=>{
+        c.remove();
+        answers.innerHTML="";
+        question.innerText="تفصيل الإجابات:";
+        log.forEach(r=>{
             const d=document.createElement("div");
             d.className="result";
-            d.innerHTML=`
-            <strong>السؤال:</strong> ${a.question}<br>
-            <span class="${a.selected===a.correct?'correct':'incorrect'}">
-              اختيارك: ${a.selected}
+            d.innerHTML=`${r.q}<br>
+            <span class="${r.sel===r.cor?'correct':'incorrect'}">
+            اختيارك: ${r.sel ?? "⏱️"}
             </span><br>
-            <span class="correct">الجواب الصحيح: ${a.correct}</span>`;
-            message.appendChild(d);
+            <span class="correct">الصحيح: ${r.cor}</span>`;
+            answers.appendChild(d);
         });
-        actions.style.display="block";
     },3000);
+}
+
+function toggleMenu(){
+    menu.style.display = menu.style.display==="block"?"none":"block";
 }
 
 show();
