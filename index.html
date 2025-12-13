@@ -4,51 +4,125 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الصفحة الرئيسية</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+/* ===== الأساس ===== */
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#2f3e46,#354f52);
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+}
+
+/* ===== الحاوية ===== */
+.container{
+    background: rgba(0,0,0,.35);
+    padding:40px 30px;
+    border-radius:22px;
+    width:90%;
+    max-width:520px;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(0,0,0,.6);
+}
+
+/* ===== العناوين ===== */
+h1{
+    margin-bottom:10px;
+    font-size:34px;
+}
+p{
+    margin-bottom:25px;
+    font-size:18px;
+    opacity:.9;
+}
+
+/* ===== شبكة الألعاب ===== */
+.games-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:18px;
+    margin:25px 0;
+}
+
+/* ===== أزرار الألعاب ===== */
+.game-button{
+    padding:18px;
+    font-size:18px;
+    border:none;
+    border-radius:16px;
+    cursor:pointer;
+    background:#f1f1f1;
+    color:#2f3e46;
+    transition:.25s;
+}
+.game-button:hover{
+    transform:scale(1.06);
+    background:#ffffff;
+}
+
+/* ===== زر التصفير ===== */
+.reset-btn{
+    margin-top:15px;
+    padding:14px;
+    width:100%;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    background:#e63946;
+    color:#fff;
+    font-size:18px;
+}
+.reset-btn:hover{
+    background:#ff4d5a;
+}
+
+/* ===== الفوتر ===== */
+footer{
+    margin-top:30px;
+    font-size:20px;       /* أوضح */
+    font-weight:bold;
+    color:#eaeaea;
+    text-align:center;
+}
+</style>
 </head>
 
-<body class="home">
-
-<!-- زر الدارك مود -->
-<button id="darkToggle" onclick="toggleDark()">🌙</button>
+<body>
 
 <div class="container">
 
-    <!-- زر القائمة -->
-    <div class="menu-btn" onclick="toggleMenu()">☰</div>
-
-    <!-- القائمة -->
-    <div class="menu" id="menu">
-        <h3>📊 درجاتك</h3>
-        <div>آخر نتيجة: <span id="lastScore">-</span></div>
-        <div>عدد المحاولات: <span id="tries">0</span></div>
-        <hr>
-        <div>🧮 رياضيات: <span id="mathScore">-</span></div>
-        <div>🧠 معلومات: <span id="logicScore">-</span></div>
-        <div>🃏 ذاكرة: <span id="memoryScore">-</span></div>
-        <div>🎯 تحدي: <span id="challengeScore">-</span></div>
-    </div>
-
-    <!-- العنوان -->
     <h1>هلا والله يالله حيه</h1>
-    <p>اختر من الالعاب ذي طال عمرك</p>
+    <p>اختر من الألعاب ذي طال عمرك</p>
 
-    <!-- أزرار الألعاب -->
-    <button class="game-button" onclick="goTo('math-game.html')">🧮 لعبة الرياضيات</button>
-    <button class="game-button" onclick="goTo('logic-game.html')">🧠 لعبة المعلومات</button>
-    <button class="game-button" onclick="goTo('memory-game.html')">🃏 لعبة الذاكرة</button>
-    <button class="game-button" onclick="goTo('challenge-game.html')">🎯 لعبة التحدي</button>
+    <!-- الألعاب (2 فوق + 2 تحت) -->
+    <div class="games-grid">
+        <button class="game-button" onclick="goTo('math-game.html')">🧮 لعبة الرياضيات</button>
+        <button class="game-button" onclick="goTo('logic-game.html')">🧠 لعبة المعلومات</button>
+        <button class="game-button" onclick="goTo('memory-game.html')">🃏 لعبة الذاكرة</button>
+        <button class="game-button" onclick="goTo('challenge-game.html')">🎯 لعبة التحدي</button>
+    </div>
 
     <!-- تصفير -->
     <button class="reset-btn" onclick="resetAll()">🔄 تصفير الدرجات</button>
 
-    <!-- الفوتر -->
-    <footer class="footer">
-        تم تطوير وبرمجة هذا الموقع بواسطة <span>فارس</span> 💻
-    </footer>
+    <footer>💻 تم تطوير وبرمجة هذا الموقع بواسطة فارس</footer>
 
 </div>
 
-<script src="script.js"></script>
+<script>
+function goTo(page){
+    location.href = page;
+}
+
+function resetAll(){
+    localStorage.clear();
+    alert("تم تصفير جميع الدرجات");
+}
+</script>
+
 </body>
 </html>
