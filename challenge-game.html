@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحدي الألوان</title>
+<title>لعبة المعلومات</title>
 
 <style>
 *{box-sizing:border-box;font-family:Arial}
@@ -11,7 +11,7 @@
 body{
     margin:0;
     min-height:100vh;
-    background:linear-gradient(135deg,#222,#000);
+    background:linear-gradient(135deg,#1b263b,#415a77);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -22,7 +22,7 @@ body{
     position:relative;
     width:90%;
     max-width:520px;
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.45);
     padding:30px;
     border-radius:22px;
     text-align:center;
@@ -63,9 +63,9 @@ body{
 .question{
     background:#fff;
     color:#000;
-    padding:25px;
+    padding:22px;
     border-radius:16px;
-    font-size:30px;
+    font-size:28px;
     margin-bottom:25px;
 }
 
@@ -76,23 +76,27 @@ body{
 }
 
 .answers button{
+    background:#000;
+    color:#fff;
     border:none;
     border-radius:16px;
     padding:20px;
     font-size:20px;
     cursor:pointer;
-    color:#fff;
 }
+
+.answers button:hover{background:#222}
 
 .center{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.85);
+    background:rgba(0,0,0,.8);
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:100;
 }
+
 .center div{
     background:#fff;
     color:#000;
@@ -134,26 +138,51 @@ body{
 </div>
 
 <script>
-const colors=[
-{name:"أحمر",color:"red"},
-{name:"أزرق",color:"blue"},
-{name:"أخضر",color:"green"},
-{name:"أصفر",color:"gold"},
-{name:"بنفسجي",color:"purple"},
-{name:"برتقالي",color:"orange"}
-];
+const allQuestions = [
+{q:"ما الكوكب الأحمر؟",c:["الزهرة","المريخ","عطارد","زحل"],a:"المريخ"},
+{q:"أكبر محيط في العالم؟",c:["الأطلسي","الهندي","الهادئ","المتجمد"],a:"الهادئ"},
+{q:"عاصمة اليابان؟",c:["بكين","سيول","طوكيو","بانكوك"],a:"طوكيو"},
+{q:"كم عدد قارات العالم؟",c:["5","6","7","8"],a:"7"},
+{q:"أكبر حيوان على وجه الأرض؟",c:["الفيل","الحوت الأزرق","الزرافة","وحيد القرن"],a:"الحوت الأزرق"},
+{q:"عاصمة فرنسا؟",c:["روما","برلين","باريس","مدريد"],a:"باريس"},
+{q:"ملك الغابة؟",c:["النمر","الأسد","الفهد","الذئب"],a:"الأسد"},
+{q:"أقرب كوكب للشمس؟",c:["الأرض","الزهرة","عطارد","المريخ"],a:"عطارد"},
+{q:"كم عدد ألوان قوس قزح؟",c:["5","6","7","8"],a:"7"},
+{q:"عاصمة السعودية؟",c:["جدة","مكة","الرياض","المدينة"],a:"الرياض"},
 
-const allQuestions = Array.from({length:50},()=>{
-    const word = colors[Math.floor(Math.random()*colors.length)];
-    const ink  = colors[Math.floor(Math.random()*colors.length)];
-    return {
-        q:`اختر لون الخط`,
-        text:word.name,
-        color:ink.color,
-        c: shuffle(colors.map(c=>c.name)),
-        a: ink.name
-    };
-});
+{q:"أكبر قارة؟",c:["أفريقيا","أوروبا","آسيا","أمريكا"],a:"آسيا"},
+{q:"أسرع حيوان بري؟",c:["الحصان","الفهد","الغزال","النمر"],a:"الفهد"},
+{q:"عاصمة مصر؟",c:["القاهرة","الإسكندرية","الجيزة","الأقصر"],a:"القاهرة"},
+{q:"أكبر دولة مساحة؟",c:["الصين","روسيا","كندا","أمريكا"],a:"روسيا"},
+{q:"كم عدد أسنان الإنسان البالغ؟",c:["28","30","32","34"],a:"32"},
+{q:"أكثر لغة تحدثًا؟",c:["الإنجليزية","العربية","الإسبانية","الصينية"],a:"الصينية"},
+{q:"أكبر كوكب؟",c:["الأرض","زحل","المشتري","أورانوس"],a:"المشتري"},
+{q:"عاصمة بريطانيا؟",c:["لندن","مانشستر","ليفربول","برمنغهام"],a:"لندن"},
+{q:"أي عنصر نحتاجه للتنفس؟",c:["النيتروجين","الأكسجين","الكربون","الهيدروجين"],a:"الأكسجين"},
+{q:"كم عدد أحرف اللغة العربية؟",c:["26","27","28","29"],a:"28"},
+
+{q:"أطول نهر؟",c:["الأمازون","النيل","المسيسيبي","الدانوب"],a:"النيل"},
+{q:"عاصمة إيطاليا؟",c:["ميلانو","روما","نابولي","فينيسيا"],a:"روما"},
+{q:"عملة اليابان؟",c:["الدولار","اليورو","الين","الوون"],a:"الين"},
+{q:"أطول سورة؟",c:["النساء","آل عمران","البقرة","المائدة"],a:"البقرة"},
+{q:"حيوان لا يشرب ماء؟",c:["الفأر","الكنغر","الكوالا","الأرنب"],a:"الكوالا"},
+{q:"أكبر عضو؟",c:["القلب","الدماغ","الجلد","الرئة"],a:"الجلد"},
+{q:"ساعات اليوم؟",c:["12","18","24","36"],a:"24"},
+{q:"عاصمة تركيا؟",c:["إسطنبول","أنقرة","إزمير","أنطاليا"],a:"أنقرة"},
+{q:"اخترعت الورق؟",c:["مصر","الهند","الصين","اليونان"],a:"الصين"},
+{q:"ثلاث قلوب؟",c:["الحوت","التمساح","الأخطبوط","القرش"],a:"الأخطبوط"},
+
+{q:"أسرع طائر؟",c:["النسر","الصقر الشاهين","الصقر الحر","النورس"],a:"الصقر الشاهين"},
+{q:"أصغر كوكب؟",c:["عطارد","المريخ","الزهرة","نبتون"],a:"عطارد"},
+{q:"عاصمة أستراليا؟",c:["سيدني","ملبورن","كانبرا","بيرث"],a:"كانبرا"},
+{q:"أعلى جبل؟",c:["كليمنجارو","إيفرست","الألب","أطلس"],a:"إيفرست"},
+{q:"لون دم الأخطبوط؟",c:["أحمر","أزرق","أخضر","أسود"],a:"أزرق"},
+{q:"أكبر دولة سكانًا؟",c:["الهند","الصين","أمريكا","روسيا"],a:"الصين"},
+{q:"عاصمة إسبانيا؟",c:["برشلونة","فالنسيا","مدريد","إشبيلية"],a:"مدريد"},
+{q:"مفاتيح البيانو؟",c:["76","80","88","92"],a:"88"},
+{q:"ينام بعين مفتوحة؟",c:["القط","الحصان","الدلفين","الكلب"],a:"الدلفين"},
+{q:"أكبر بحر مغلق؟",c:["الأحمر","قزوين","الأسود","العرب"],a:"قزوين"}
+];
 
 function shuffle(a){return a.sort(()=>Math.random()-0.5)}
 
@@ -164,38 +193,33 @@ let timer;
 function show(){
     clearTimeout(timer);
     const q=questions[index];
-    question.innerHTML=`${q.q}<br><span style="color:${q.color}">${q.text}</span>`;
+    question.innerText=q.q;
     answers.innerHTML="";
     shuffle([...q.c]).forEach(o=>{
         const b=document.createElement("button");
         b.innerText=o;
-        b.style.background=o==="أحمر"?"red":
-                           o==="أزرق"?"blue":
-                           o==="أخضر"?"green":
-                           o==="أصفر"?"gold":
-                           o==="بنفسجي"?"purple":"orange";
         b.onclick=()=>choose(o);
         answers.appendChild(b);
     });
-    timer=setTimeout(()=>choose(null),5000);
+    timer=setTimeout(()=>choose(null),10000);
 }
 
 function choose(sel){
     clearTimeout(timer);
     const q=questions[index];
-    log.push({q:`${q.text} (${q.color})`,sel,cor:q.a});
+    log.push({q:q.q,sel,cor:q.a});
     if(sel===q.a) score++;
     index++;
     index<questions.length?show():end();
 }
 
 function end(){
-    localStorage.setItem("challengeScore",score+"/10");
+    localStorage.setItem("logicScore",score+"/10");
     scoreBox.innerText=score+"/10";
 
-    let msg = score>=7?"حي عينك كفو كفو!"
+    let msg = score>=7?"حي عينك كفو!"
             :score>=4?"مااااش!"
-            :"لا حد يشوف درجتك بس";
+            :"لا حد يشوف درجتك";
 
     const c=document.createElement("div");
     c.className="center";
