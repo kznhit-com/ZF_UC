@@ -3,194 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الصفحة الرئيسية</title>
-
-<style>
-*{
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
-
-body{
-    margin:0;
-    min-height:100vh;
-    background:linear-gradient(135deg,#354f52,#2f3e46);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
-}
-
-/* ===== الحاوية ===== */
-.container{
-    position:relative;
-    width:90%;
-    max-width:520px;
-    background:rgba(0,0,0,.45);
-    padding:35px 30px;
-    border-radius:22px;
-    text-align:center;
-    box-shadow:0 25px 60px rgba(0,0,0,.6);
-}
-
-/* ===== زر دارك ===== */
-.dark-btn{
-    position:absolute;
-    top:15px;
-    left:15px;
-    width:40px;
-    height:40px;
-    border:none;
-    border-radius:50%;
-    cursor:pointer;
-    font-size:18px;
-}
-
-/* ===== منيو ===== */
-.menu-btn{
-    position:absolute;
-    top:15px;
-    right:15px;
-    font-size:22px;
-    cursor:pointer;
-}
-
-.menu{
-    position:absolute;
-    top:55px;
-    right:10px;
-    background:#fff;
-    color:#000;
-    width:100%;
-    max-width:480px;
-    padding:15px;
-    border-radius:16px;
-    display:none;
-    text-align:right;
-}
-
-/* ===== العنوان ===== */
-h1{
-    margin-bottom:10px;
-    font-size:32px;
-}
-
-p{
-    margin-bottom:25px;
-    font-size:18px;
-    color:#ddd;
-}
-
-/* ===== أزرار الألعاب ===== */
-.games{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.game-btn{
-    padding:18px;
-    font-size:18px;
-    border:none;
-    border-radius:16px;
-    cursor:pointer;
-    background:#cad2c5;
-    color:#2f3e46;
-    transition:.2s;
-}
-.game-btn:hover{
-    transform:scale(1.05);
-    background:#e9edc9;
-}
-
-/* ===== زر ريست ===== */
-.reset{
-    margin-top:20px;
-    padding:14px;
-    width:100%;
-    border:none;
-    border-radius:16px;
-    cursor:pointer;
-    background:#e63946;
-    color:#fff;
-    font-size:16px;
-}
-.reset:hover{
-    background:#ff4d5a;
-}
-
-/* ===== الفوتر ===== */
-footer{
-    margin-top:25px;
-    font-size:16px;
-    opacity:.9;
-}
-</style>
+<title>الألعاب</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- زر الوضع الليلي -->
+<button class="dark-toggle" onclick="toggleDark()">🌙</button>
+
+<!-- المنيو -->
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+<div class="menu" id="menu">
+  <h3>📊 درجاتك</h3>
+  <div>آخر نتيجة: <span id="lastScore">-</span></div>
+  <div>أفضل نتيجة: <span id="bestScore">-</span></div>
+  <div>عدد المحاولات: <span id="tries">0</span></div>
+</div>
+
 <div class="container">
 
-<button class="dark-btn" onclick="toggleDark()">🌙</button>
-<div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <h1>هلا والله يالله حيه</h1>
+  <p>اختر من الألعاب ذي طال عمرك</p>
 
-<div class="menu" id="menu">
-<h3>📊 درجاتك</h3>
-<div>رياضيات: <span id="math">-</span></div>
-<div>معلومات: <span id="logic">-</span></div>
-<div>ذاكرة: <span id="memory">-</span></div>
-</div>
+  <div class="games-grid">
+    <button class="game-btn" onclick="goTo('math-game.html')">🧮 رياضيات</button>
+    <button class="game-btn" onclick="goTo('logic-game.html')">🧠 معلومات</button>
+    <button class="game-btn" onclick="goTo('memory-game.html')">🃏 ذاكرة</button>
+    <button class="game-btn" onclick="goTo('challenge-game.html')">⚡ تحدي</button>
+  </div>
 
-<h1>هلا والله يالله حيه</h1>
-<p>اختر من الالعاب ذي طال عمرك</p>
+  <button class="reset-btn" onclick="resetAll()">🔄 تصفير الدرجات</button>
 
-<div class="games">
-<button class="game-btn" onclick="goTo('math-game.html')">🧮 رياضيات</button>
-<button class="game-btn" onclick="goTo('logic-game.html')">🧠 معلومات</button>
-<button class="game-btn" onclick="goTo('memory-game.html')">🃏 ذاكرة</button>
-<button class="game-btn" onclick="goTo('challenge-game.html')">⚡ تحدي</button>
-</div>
-
-<button class="reset" onclick="resetScores()">🔄 تصفير الدرجات</button>
-
-<footer>
-تم تطوير وبرمجة هذا الموقع بواسطة فارس
-</footer>
+  <footer>تم تطوير وبرمجة هذا الموقع بواسطة فارس 💻</footer>
 
 </div>
 
-<script>
-/* دارك */
-function toggleDark(){
-    document.body.classList.toggle("dark");
-}
-
-/* منيو */
-function toggleMenu(){
-    const m=document.getElementById("menu");
-    m.style.display = m.style.display==="block"?"none":"block";
-}
-
-/* انتقال */
-function goTo(page){
-    location.href=page;
-}
-
-/* تحميل الدرجات */
-function loadScores(){
-    math.innerText = localStorage.getItem("mathScore") ?? "-";
-    logic.innerText = localStorage.getItem("logicScore") ?? "-";
-    memory.innerText = localStorage.getItem("memoryScore") ?? "-";
-}
-loadScores();
-
-/* تصفير */
-function resetScores(){
-    localStorage.clear();
-    loadScores();
-}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
