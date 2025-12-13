@@ -6,12 +6,15 @@
 <title>الصفحة الرئيسية</title>
 
 <style>
-/* ===== الأساس ===== */
+*{
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
 body{
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#2f3e46,#354f52);
     margin:0;
     min-height:100vh;
+    background:linear-gradient(135deg,#354f52,#2f3e46);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -20,73 +23,107 @@ body{
 
 /* ===== الحاوية ===== */
 .container{
-    background: rgba(0,0,0,.35);
-    padding:40px 30px;
-    border-radius:22px;
+    position:relative;
     width:90%;
     max-width:520px;
+    background:rgba(0,0,0,.45);
+    padding:35px 30px;
+    border-radius:22px;
     text-align:center;
     box-shadow:0 25px 60px rgba(0,0,0,.6);
 }
 
-/* ===== العناوين ===== */
+/* ===== زر دارك ===== */
+.dark-btn{
+    position:absolute;
+    top:15px;
+    left:15px;
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* ===== منيو ===== */
+.menu-btn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.menu{
+    position:absolute;
+    top:55px;
+    right:10px;
+    background:#fff;
+    color:#000;
+    width:100%;
+    max-width:480px;
+    padding:15px;
+    border-radius:16px;
+    display:none;
+    text-align:right;
+}
+
+/* ===== العنوان ===== */
 h1{
     margin-bottom:10px;
-    font-size:34px;
+    font-size:32px;
 }
+
 p{
     margin-bottom:25px;
     font-size:18px;
-    opacity:.9;
-}
-
-/* ===== شبكة الألعاب ===== */
-.games-grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:18px;
-    margin:25px 0;
+    color:#ddd;
 }
 
 /* ===== أزرار الألعاب ===== */
-.game-button{
+.games{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.game-btn{
     padding:18px;
     font-size:18px;
     border:none;
     border-radius:16px;
     cursor:pointer;
-    background:#f1f1f1;
+    background:#cad2c5;
     color:#2f3e46;
-    transition:.25s;
+    transition:.2s;
 }
-.game-button:hover{
-    transform:scale(1.06);
-    background:#ffffff;
+.game-btn:hover{
+    transform:scale(1.05);
+    background:#e9edc9;
 }
 
-/* ===== زر التصفير ===== */
-.reset-btn{
-    margin-top:15px;
+/* ===== زر ريست ===== */
+.reset{
+    margin-top:20px;
     padding:14px;
     width:100%;
     border:none;
-    border-radius:14px;
+    border-radius:16px;
     cursor:pointer;
     background:#e63946;
     color:#fff;
-    font-size:18px;
+    font-size:16px;
 }
-.reset-btn:hover{
+.reset:hover{
     background:#ff4d5a;
 }
 
 /* ===== الفوتر ===== */
 footer{
-    margin-top:30px;
-    font-size:20px;       /* أوضح */
-    font-weight:bold;
-    color:#eaeaea;
-    text-align:center;
+    margin-top:25px;
+    font-size:16px;
+    opacity:.9;
 }
 </style>
 </head>
@@ -95,32 +132,63 @@ footer{
 
 <div class="container">
 
-    <h1>هلا والله يالله حيه</h1>
-    <p>اختر من الألعاب ذي طال عمرك</p>
+<button class="dark-btn" onclick="toggleDark()">🌙</button>
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
 
-    <!-- الألعاب (2 فوق + 2 تحت) -->
-    <div class="games-grid">
-        <button class="game-button" onclick="goTo('math-game.html')">🧮 لعبة الرياضيات</button>
-        <button class="game-button" onclick="goTo('logic-game.html')">🧠 لعبة المعلومات</button>
-        <button class="game-button" onclick="goTo('memory-game.html')">🃏 لعبة الذاكرة</button>
-        <button class="game-button" onclick="goTo('challenge-game.html')">🎯 لعبة التحدي</button>
-    </div>
+<div class="menu" id="menu">
+<h3>📊 درجاتك</h3>
+<div>رياضيات: <span id="math">-</span></div>
+<div>معلومات: <span id="logic">-</span></div>
+<div>ذاكرة: <span id="memory">-</span></div>
+</div>
 
-    <!-- تصفير -->
-    <button class="reset-btn" onclick="resetAll()">🔄 تصفير الدرجات</button>
+<h1>هلا والله يالله حيه</h1>
+<p>اختر من الالعاب ذي طال عمرك</p>
 
-    <footer>💻 تم تطوير وبرمجة هذا الموقع بواسطة فارس</footer>
+<div class="games">
+<button class="game-btn" onclick="goTo('math-game.html')">🧮 رياضيات</button>
+<button class="game-btn" onclick="goTo('logic-game.html')">🧠 معلومات</button>
+<button class="game-btn" onclick="goTo('memory-game.html')">🃏 ذاكرة</button>
+<button class="game-btn" onclick="goTo('challenge-game.html')">⚡ تحدي</button>
+</div>
+
+<button class="reset" onclick="resetScores()">🔄 تصفير الدرجات</button>
+
+<footer>
+تم تطوير وبرمجة هذا الموقع بواسطة فارس
+</footer>
 
 </div>
 
 <script>
-function goTo(page){
-    location.href = page;
+/* دارك */
+function toggleDark(){
+    document.body.classList.toggle("dark");
 }
 
-function resetAll(){
+/* منيو */
+function toggleMenu(){
+    const m=document.getElementById("menu");
+    m.style.display = m.style.display==="block"?"none":"block";
+}
+
+/* انتقال */
+function goTo(page){
+    location.href=page;
+}
+
+/* تحميل الدرجات */
+function loadScores(){
+    math.innerText = localStorage.getItem("mathScore") ?? "-";
+    logic.innerText = localStorage.getItem("logicScore") ?? "-";
+    memory.innerText = localStorage.getItem("memoryScore") ?? "-";
+}
+loadScores();
+
+/* تصفير */
+function resetScores(){
     localStorage.clear();
-    alert("تم تصفير جميع الدرجات");
+    loadScores();
 }
 </script>
 
