@@ -8,23 +8,24 @@
 </head>
 
 <body>
-<div class="container">
 
-<h1>هلا والله يالله حيه</h1>
-<p>اختر من الألعاب ذي طال عمرك</p>
+<div class="card">
 
-<div class="grid">
-<button onclick="location.href='math.html'">🧮 رياضيات</button>
-<button onclick="location.href='logic.html'">🧠 معلومات</button>
-<button onclick="location.href='memory.html'">🃏 ذاكرة</button>
-<button onclick="location.href='challenge.html'">⚡ تحدي</button>
+  <h1>هلا والله يالله حيه</h1>
+  <p class="sub">اختر من الألعاب ذي طال عمرك</p>
+
+  <div class="games">
+    <button onclick="location.href='math.html'">🧮 رياضيات</button>
+    <button onclick="location.href='logic.html'">🧠 معلومات</button>
+    <button onclick="location.href='memory.html'">🃏 ذاكرة</button>
+    <button onclick="location.href='challenge.html'">⚡ تحدي</button>
+  </div>
+
+  <button class="reset" onclick="localStorage.clear()">🔄 تصفير الدرجات</button>
+
+  <div class="footer">تم تطوير وبرمجة هذا الموقع بواسطة فارس</div>
+
 </div>
 
-<button class="reset" onclick="localStorage.clear();location.reload()">🔄 تصفير الدرجات</button>
-
-<p class="footer">تم تطوير وبرمجة هذا الموقع بواسطة فارس</p>
-
-</div>
-<script src="script.js"></script>
 </body>
 </html>
