@@ -2,29 +2,93 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الألعاب</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(135deg,#354f52,#2f3e46);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial,sans-serif;
+    color:#fff;
+}
+
+.container{
+    background:rgba(0,0,0,.45);
+    padding:40px;
+    border-radius:20px;
+    width:90%;
+    max-width:500px;
+    text-align:center;
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+p{
+    opacity:.8;
+    margin-bottom:25px;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+button{
+    padding:18px;
+    font-size:18px;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    background:#e0e0e0;
+    color:#222;
+    transition:.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    background:#fff;
+}
+
+.reset{
+    grid-column:1/3;
+    background:#e63946;
+    color:#fff;
+}
+
+footer{
+    margin-top:20px;
+    font-size:14px;
+    opacity:.7;
+}
+</style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
+    <h1>هلا والله يالله حيه</h1>
+    <p>اختر من الألعاب ذي طال عمرك</p>
 
-  <h1>هلا والله يالله حيه</h1>
-  <p class="sub">اختر من الألعاب ذي طال عمرك</p>
+    <div class="buttons">
+        <button onclick="location.href='math-game.html'">📘 رياضيات</button>
+        <button onclick="location.href='logic-game.html'">🧠 معلومات</button>
+        <button onclick="location.href='memory-game.html'">🃏 ذاكرة</button>
+        <button onclick="location.href='challenge-game.html'">⚡ تحدي</button>
+        <button class="reset" onclick="localStorage.clear();alert('تم تصفير الدرجات')">
+            🔄 تصفير الدرجات
+        </button>
+    </div>
 
-  <div class="games">
-    <button onclick="location.href='math.html'">🧮 رياضيات</button>
-    <button onclick="location.href='logic.html'">🧠 معلومات</button>
-    <button onclick="location.href='memory.html'">🃏 ذاكرة</button>
-    <button onclick="location.href='challenge.html'">⚡ تحدي</button>
-  </div>
-
-  <button class="reset" onclick="localStorage.clear()">🔄 تصفير الدرجات</button>
-
-  <div class="footer">تم تطوير وبرمجة هذا الموقع بواسطة فارس</div>
-
+    <footer>
+        💻 تم تطوير وبرمجة هذا الموقع بواسطة فارس
+    </footer>
 </div>
 
 </body>
