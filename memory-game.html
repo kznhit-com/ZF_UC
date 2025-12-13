@@ -1,116 +1,231 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
-<title>لعبة الذاكرة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لعبة المعلومات</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(135deg,#1b263b,#415a77);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+}
+
+.game-container{
+    position:relative;
+    width:90%;
+    max-width:520px;
+    background:rgba(0,0,0,.45);
+    padding:30px;
+    border-radius:22px;
+    text-align:center;
+}
+
+.back{
+    position:absolute;
+    top:15px;
+    left:15px;
+    border:none;
+    border-radius:12px;
+    padding:8px 14px;
+    cursor:pointer;
+}
+
+.menu-btn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    cursor:pointer;
+    font-size:22px;
+}
+
+.menu{
+    position:absolute;
+    top:55px;
+    right:10px;
+    background:#fff;
+    color:#000;
+    width:100%;
+    max-width:480px;
+    padding:15px;
+    border-radius:16px;
+    display:none;
+    text-align:right;
+}
+
+.question{
+    background:#fff;
+    color:#000;
+    padding:22px;
+    border-radius:16px;
+    font-size:28px;
+    margin-bottom:25px;
+}
+
+.answers{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.answers button{
+    background:#000;
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    padding:20px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.answers button:hover{background:#222}
+
+.center{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:100;
+}
+
+.center div{
+    background:#fff;
+    color:#000;
+    padding:30px;
+    border-radius:20px;
+    font-size:24px;
+    text-align:center;
+}
+
+.result{
+    background:#f1f1f1;
+    color:#000;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.correct{color:green;font-weight:bold}
+.incorrect{color:red;font-weight:bold}
+</style>
 </head>
 
 <body>
 
-<button class="back" onclick="goTo('index.html')">⬅️ رجوع</button>
+<div class="game-container">
 
-<h2>اختر المستوى</h2>
-<div id="difficulty">
-    <button onclick="setLevel('easy')">سهل</button>
-    <button onclick="setLevel('hard')">صعب</button>
+<button class="back" onclick="location.href='index.html'">⬅️</button>
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div class="menu" id="menu">
+<h3>📊 آخر نتيجة</h3>
+<div id="scoreBox">-</div>
 </div>
 
-<div id="timer"></div>
-<div id="board"></div>
+<div class="question" id="question"></div>
+<div class="answers" id="answers"></div>
 
-<div id="actions" style="display:none">
-    <button class="back" onclick="location.reload()">🔄 إعادة اللعب</button>
 </div>
-
-<script src="script.js"></script>
 
 <script>
-let level="";
-let cards=[];
-let first=null, second=null, lock=false;
-let matches=0, totalPairs=0;
-let startTime, timerInt;
+const allQuestions = [
+{q:"ما الكوكب الأحمر؟",c:["الزهرة","المريخ","عطارد","زحل"],a:"المريخ"},
+{q:"أكبر محيط في العالم؟",c:["الأطلسي","الهندي","الهادئ","المتجمد"],a:"الهادئ"},
+{q:"عاصمة اليابان؟",c:["بكين","سيول","طوكيو","بانكوك"],a:"طوكيو"},
+{q:"كم عدد قارات العالم؟",c:["5","6","7","8"],a:"7"},
+{q:"أكبر حيوان على وجه الأرض؟",c:["الفيل","الحوت الأزرق","الزرافة","وحيد القرن"],a:"الحوت الأزرق"},
+{q:"عاصمة فرنسا؟",c:["روما","برلين","باريس","مدريد"],a:"باريس"},
+{q:"ملك الغابة؟",c:["النمر","الأسد","الفهد","الذئب"],a:"الأسد"},
+{q:"أقرب كوكب للشمس؟",c:["الأرض","الزهرة","عطارد","المريخ"],a:"عطارد"},
+{q:"كم عدد ألوان قوس قزح؟",c:["5","6","7","8"],a:"7"},
+{q:"عاصمة السعودية؟",c:["جدة","مكة","الرياض","المدينة"],a:"الرياض"},
 
-function setLevel(l){
-    level=l;
-    const count = l==="easy"?16:30;
-    totalPairs = count/2;
-    cards = shuffle([...Array(totalPairs).keys()].map(i=>i+1).flatMap(n=>[n,n]));
-    difficulty.style.display="none";
-    startGame();
-}
+{q:"أكبر قارة في العالم؟",c:["أفريقيا","أوروبا","آسيا","أمريكا"],a:"آسيا"},
+{q:"أسرع حيوان بري؟",c:["الحصان","الفهد","الغزال","النمر"],a:"الفهد"},
+{q:"عاصمة مصر؟",c:["القاهرة","الإسكندرية","الجيزة","الأقصر"],a:"القاهرة"},
+{q:"أكبر دولة مساحة؟",c:["الصين","روسيا","كندا","أمريكا"],a:"روسيا"},
+{q:"كم عدد أسنان الإنسان البالغ؟",c:["28","30","32","34"],a:"32"},
+{q:"أكثر لغة تحدثًا؟",c:["الإنجليزية","العربية","الإسبانية","الصينية"],a:"الصينية"},
+{q:"أكبر كوكب؟",c:["الأرض","زحل","المشتري","أورانوس"],a:"المشتري"},
+{q:"عاصمة بريطانيا؟",c:["لندن","مانشستر","ليفربول","برمنغهام"],a:"لندن"},
+{q:"أي عنصر نحتاجه للتنفس؟",c:["النيتروجين","الأكسجين","الكربون","الهيدروجين"],a:"الأكسجين"},
+{q:"كم عدد أحرف اللغة العربية؟",c:["26","27","28","29"],a:"28"}
+];
 
 function shuffle(a){return a.sort(()=>Math.random()-0.5)}
 
-function startGame(){
-    matches=0;
-    first=second=null;
-    lock=false;
-    board.innerHTML="";
+let questions = shuffle([...allQuestions]).slice(0,10);
+let index=0, score=0, log=[];
+let timer;
 
-    const cols = level==="easy"?4:6;
-    board.style.gridTemplateColumns=`repeat(${cols},80px)`;
-
-    cards.forEach(n=>{
-        const c=document.createElement("div");
-        c.className="card hidden";
-        c.dataset.num=n;
-        c.onclick=()=>flip(c);
-        board.appendChild(c);
+function show(){
+    clearTimeout(timer);
+    const q=questions[index];
+    question.innerText=q.q;
+    answers.innerHTML="";
+    shuffle([...q.c]).forEach(o=>{
+        const b=document.createElement("button");
+        b.innerText=o;
+        b.onclick=()=>choose(o);
+        answers.appendChild(b);
     });
-
-    startTime=Date.now();
-    timerInt=setInterval(updateTimer,1000);
+    timer=setTimeout(()=>choose(null),5000);
 }
 
-function updateTimer(){
-    const t=Math.floor((Date.now()-startTime)/1000);
-    timer.innerText="⏱️ الوقت: "+t+" ثانية";
+function choose(sel){
+    clearTimeout(timer);
+    const q=questions[index];
+    log.push({q:q.q,sel,cor:q.a});
+    if(sel===q.a) score++;
+    index++;
+    index<questions.length?show():end();
 }
 
-function flip(card){
-    if(lock || !card.classList.contains("hidden"))return;
-    card.classList.remove("hidden");
-    card.innerText=card.dataset.num;
+function end(){
+    localStorage.setItem("logicScore",score+"/10");
+    scoreBox.innerText=score+"/10";
 
-    if(!first){ first=card; return; }
-    second=card;
-    lock=true;
+    let msg = score>=7?"حي عينك كفو كفو!"
+            :score>=4?"مااااش!"
+            :"لا حد يشوف درجتك بس";
 
-    setTimeout(checkMatch,600);
-}
-
-function checkMatch(){
-    if(first.dataset.num===second.dataset.num){
-        matches++;
-        if(matches===totalPairs) endGame();
-    }else{
-        first.classList.add("hidden");
-        second.classList.add("hidden");
-        first.innerText=second.innerText="";
-    }
-    first=second=null;
-    lock=false;
-}
-
-function endGame(){
-    clearInterval(timerInt);
-    const time=Math.floor((Date.now()-startTime)/1000);
-
-    let msg="";
-    if(time<=40) msg="حيّ عينك 🔥";
-    else if(time<=60) msg="مااااش 😅";
-    else msg="طوّلت يا أخي جانا النوم 😴";
-
-    showCenterMessage(msg + "\nوقتك: " + time + " ثانية");
-saveScore("memory", time, "🃏 ذاكرة: " + time + " ثانية");
-   
+    const c=document.createElement("div");
+    c.className="center";
+    c.innerHTML=`<div>${msg}<br>درجتك: ${score}/10</div>`;
+    document.body.appendChild(c);
 
     setTimeout(()=>{
-        actions.style.display="block";
+        c.remove();
+        answers.innerHTML="";
+        question.innerText="تفصيل الإجابات:";
+        log.forEach(r=>{
+            const d=document.createElement("div");
+            d.className="result";
+            d.innerHTML=`${r.q}<br>
+            <span class="${r.sel===r.cor?'correct':'incorrect'}">
+            اختيارك: ${r.sel ?? "⏱️"}
+            </span><br>
+            <span class="correct">الصحيح: ${r.cor}</span>`;
+            answers.appendChild(d);
+        });
     },3000);
 }
+
+function toggleMenu(){
+    menu.style.display = menu.style.display==="block"?"none":"block";
+}
+
+show();
 </script>
 
 </body>
