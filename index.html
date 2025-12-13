@@ -1,114 +1,30 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الألعاب</title>
-
-<style>
-*{
-    box-sizing:border-box;
-    font-family: Arial, sans-serif;
-}
-
-body{
-    margin:0;
-    min-height:100vh;
-    background: linear-gradient(135deg,#2f3e46,#354f52);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
-}
-
-.container{
-    background: rgba(0,0,0,.45);
-    width:90%;
-    max-width:520px;
-    padding:35px 30px;
-    border-radius:22px;
-    box-shadow:0 25px 60px rgba(0,0,0,.6);
-    text-align:center;
-}
-
-h1{
-    margin-bottom:10px;
-    font-size:32px;
-}
-
-p{
-    margin-bottom:25px;
-    font-size:18px;
-    opacity:.9;
-}
-
-.games{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-    margin-bottom:20px;
-}
-
-.games button{
-    padding:18px;
-    border:none;
-    border-radius:16px;
-    font-size:20px;
-    cursor:pointer;
-    background:#eaeaea;
-    color:#2f3e46;
-    transition:.25s;
-}
-
-.games button:hover{
-    transform:scale(1.05);
-    background:#fff;
-}
-
-.reset{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:16px;
-    font-size:18px;
-    cursor:pointer;
-    background:#e63946;
-    color:#fff;
-}
-
-.reset:hover{
-    background:#ff4d5a;
-}
-
-footer{
-    margin-top:20px;
-    font-size:15px;
-    opacity:.9;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
 <div class="container">
-    <h1>هلا والله يالله حيه</h1>
-    <p>اختر من الألعاب ذي طال عمرك</p>
 
-    <div class="games">
-        <button onclick="location.href='math.html'">🧮 رياضيات</button>
-        <button onclick="location.href='logic.html'">🧠 معلومات</button>
-        <button onclick="location.href='memory.html'">🃏 ذاكرة</button>
-        <button onclick="location.href='challenge.html'">⚡ تحدي</button>
-    </div>
+<h1>هلا والله يالله حيه</h1>
+<p>اختر من الألعاب ذي طال عمرك</p>
 
-    <button class="reset" onclick="localStorage.clear();location.reload()">
-        🔄 تصفير الدرجات
-    </button>
-
-    <footer>
-        💻 تم تطوير وبرمجة هذا الموقع بواسطة فارس
-    </footer>
+<div class="grid">
+<button onclick="location.href='math.html'">🧮 رياضيات</button>
+<button onclick="location.href='logic.html'">🧠 معلومات</button>
+<button onclick="location.href='memory.html'">🃏 ذاكرة</button>
+<button onclick="location.href='challenge.html'">⚡ تحدي</button>
 </div>
 
+<button class="reset" onclick="localStorage.clear();location.reload()">🔄 تصفير الدرجات</button>
+
+<p class="footer">تم تطوير وبرمجة هذا الموقع بواسطة فارس</p>
+
+</div>
+<script src="script.js"></script>
 </body>
 </html>
