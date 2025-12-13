@@ -1,5 +1,6 @@
-/* تنقل */
-function goTo(p){location.href=p}
+function goTo(page){
+    location.href = page;
+}
 
 /* دارك مود */
 (function(){
@@ -9,28 +10,30 @@ function goTo(p){location.href=p}
 
 function toggleDark(){
     document.body.classList.toggle("dark");
-    localStorage.setItem("dark",
-        document.body.classList.contains("dark")?"on":"off"
+    localStorage.setItem(
+        "dark",
+        document.body.classList.contains("dark") ? "on" : "off"
     );
 }
 
-/* منيو */
+/* المنيو */
 function toggleMenu(){
     const m=document.getElementById("menu");
-    m.style.display=m.style.display==="block"?"none":"block";
+    m.style.display = m.style.display==="block" ? "none" : "block";
 }
 
 /* تحميل الدرجات */
 function loadScores(){
-    lastScore.innerText = localStorage.getItem("lastScore")||"-";
-    tries.innerText = localStorage.getItem("tries")||0;
-    mathScore.innerText = localStorage.getItem("mathScore")||"-";
-    logicScore.innerText = localStorage.getItem("logicScore")||"-";
-    memoryScore.innerText = localStorage.getItem("memoryScore")||"-";
+    lastScore.innerText = localStorage.getItem("lastScore") || "-";
+    tries.innerText = localStorage.getItem("tries") || 0;
+    mathScore.innerText = localStorage.getItem("mathScore") || "-";
+    logicScore.innerText = localStorage.getItem("logicScore") || "-";
+    memoryScore.innerText = localStorage.getItem("memoryScore") || "-";
+    challengeScore.innerText = localStorage.getItem("challengeScore") || "-";
 }
 loadScores();
 
-/* حفظ نتيجة (تستعمل داخل الألعاب) */
+/* حفظ نتيجة */
 function saveScore(game,score,text){
     localStorage.setItem(game+"Score",score);
     localStorage.setItem("lastScore",text);
@@ -44,20 +47,10 @@ function resetAll(){
 }
 
 /* رسالة وسط الشاشة */
-function showCenterMessage(t){
+function showCenterMessage(text){
     const d=document.createElement("div");
-    d.innerText=t;
-    d.style.cssText=`
-        position:fixed;
-        top:50%;left:50%;
-        transform:translate(-50%,-50%);
-        background:#000c;
-        color:#fff;
-        padding:25px 35px;
-        border-radius:18px;
-        font-size:24px;
-        z-index:9999;
-    `;
+    d.className="center-message";
+    d.innerText=text;
     document.body.appendChild(d);
     setTimeout(()=>d.remove(),3000);
 }
