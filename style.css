@@ -1,161 +1,92 @@
-/* ===== إعدادات عامة ===== */
 *{
-    box-sizing:border-box;
-    font-family: Arial, sans-serif;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
 }
 
 body{
-    margin:0;
-    min-height:100vh;
-    background: linear-gradient(135deg,#354f52,#2f3e46);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
-    transition:background .3s,color .3s;
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#1b2a2f,#0f2027);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
 }
 
-/* ===== الوضع الفاتح ===== */
-body.light{
-    background: linear-gradient(135deg,#f1f1f1,#e6e6e6);
-    color:#222;
-}
-
-/* ===== الحاوية الأساسية ===== */
-.container,
 .game-container{
-    background: rgba(0,0,0,.4);
-    width:90%;
-    max-width:520px;
-    padding:35px 30px;
-    border-radius:22px;
-    box-shadow:0 25px 60px rgba(0,0,0,.6);
-    text-align:center;
+  background:rgba(0,0,0,.55);
+  width:90%;
+  max-width:520px;
+  padding:35px;
+  border-radius:22px;
+  box-shadow:0 25px 60px rgba(0,0,0,.7);
+  text-align:center;
 }
 
-body.light .container,
-body.light .game-container{
-    background: rgba(255,255,255,.95);
+h2{
+  font-size:30px;
+  margin-bottom:10px;
 }
 
-/* ===== زر الوضع الليلي ===== */
-.dark-toggle{
-    position:absolute;
-    top:20px;
-    right:20px;
-    background:#fff;
-    border:none;
-    border-radius:50%;
-    width:42px;
-    height:42px;
-    font-size:20px;
-    cursor:pointer;
+.subtitle{
+  opacity:.8;
+  margin-bottom:25px;
 }
 
-/* ===== زر الرجوع ===== */
-.back{
-    position:absolute;
-    top:20px;
-    left:20px;
-    background:#f1f1f1;
-    color:#222;
-    border:none;
-    border-radius:12px;
-    padding:8px 14px;
-    cursor:pointer;
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-bottom:20px;
 }
 
-/* ===== العناوين ===== */
-h1{font-size:32px;margin-bottom:10px}
-h2{font-size:28px;margin-bottom:20px}
-p{opacity:.9}
-
-/* ===== أزرار الألعاب ===== */
-.games{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    margin:25px 0;
+.menu-btn{
+  background:#eaeaea;
+  color:#222;
+  padding:18px;
+  border-radius:14px;
+  font-size:18px;
+  text-decoration:none;
+  transition:.25s;
 }
 
-.game-btn{
-    padding:18px;
-    font-size:18px;
-    border:none;
-    border-radius:16px;
-    cursor:pointer;
-    background:#f1f1f1;
-    color:#2f3e46;
-    transition:.25s;
+.menu-btn:hover{
+  transform:scale(1.05);
+  background:#fff;
 }
 
-.game-btn:hover{
-    transform:scale(1.05);
+.reset{
+  width:100%;
+  padding:16px;
+  background:#e63946;
+  border:none;
+  border-radius:14px;
+  font-size:18px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:10px;
 }
 
-body.light .game-btn{
-    background:#eaeaea;
-    color:#222;
+.reset:hover{
+  background:#ff4d5a;
 }
 
-/* ===== زر تصفير الدرجات ===== */
-.reset-btn{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:16px;
-    background:#e63946;
-    color:#fff;
-    font-size:18px;
-    cursor:pointer;
+.scores-box{
+  margin-top:20px;
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.12);
+  font-size:14px;
+  line-height:1.8;
 }
 
-/* ===== الفوتر ===== */
-footer{
-    margin-top:20px;
-    font-size:14px;
-    opacity:.85;
+.scores-box h4{
+  margin-bottom:8px;
 }
 
-/* ===== السؤال ===== */
-.question{
-    background:#fff;
-    color:#222;
-    padding:20px;
-    border-radius:16px;
-    font-size:26px;
-    margin-bottom:25px;
+.footer{
+  display:block;
+  margin-top:20px;
+  font-size:13px;
+  opacity:.7;
 }
-
-/* ===== الخيارات ===== */
-.answers{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:15px;
-}
-
-.answers button{
-    background:#111;
-    color:#fff;
-    padding:18px;
-    border:none;
-    border-radius:16px;
-    font-size:20px;
-    cursor:pointer;
-}
-
-.answers button:hover{
-    background:#222;
-}
-
-/* ===== النتائج ===== */
-.result{
-    background:#f1f1f1;
-    color:#222;
-    padding:12px;
-    border-radius:12px;
-    margin-bottom:10px;
-}
-
-.correct{color:green;font-weight:bold}
-.incorrect{color:red;font-weight:bold}
