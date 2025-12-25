@@ -76,3 +76,65 @@ h1{
     font-size:14px;
     opacity:.85;
 }
+/* 1. تصفير الهوامش وجعل الشاشة كاملة */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* يمنع التمرير عشان تظل اللعبة ثابتة في وجهك */
+    background: radial-gradient(circle, #1e293b 0%, #0f172a 100%); /* خلفية متدرجة فخمة */
+}
+
+/* 2. جعل الـ body هو الميزان اللي يوسط كل شيء */
+body {
+    display: flex;
+    justify-content: center; /* توسيط أفقي */
+    align-items: center;     /* توسيط عمودي */
+    font-family: 'Arial', sans-serif;
+}
+
+/* 3. الحاوية اللي فيها اللعبة (الكرت اللي شفته في صورتك) */
+.game-card, .quiz-container, .memory-game {
+    width: 90%;
+    max-width: 400px; /* يحافظ على شكلها مرتب في اللابتوب والجوال */
+    background: rgba(255, 255, 255, 0.05); /* خلفية زجاجية شفافة */
+    backdrop-filter: blur(10px); /* تأثير الضباب الفخم */
+    padding: 25px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    
+    /* لضمان أن العناصر داخل الحاوية تترتب بالنص */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* 4. تنسيق العناصر الداخلية (مثل الأزرار أو الشبكة) */
+.grid, .options {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* إذا كانت لعبة ذاكرة (مربعات) */
+.cell, .card {
+    aspect-ratio: 1 / 1;
+    background: #334155;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cell:active {
+    transform: scale(0.9); /* تأثير ضغط الزر */
+}
+
+/* 5. النصوص */
+h1, h2, p {
+    margin: 10px 0;
+    color: #f1f5f9;
+}
